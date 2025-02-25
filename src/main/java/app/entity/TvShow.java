@@ -1,5 +1,7 @@
 package app.entity;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,7 +27,7 @@ public class TvShow {
     private Double popularity;
 
     @JsonProperty("first_air_date")
-    private String firstAirDate;
+    private LocalDate firstAirDate;
 
     @JsonProperty("vote_average")
     private Number voteAverage;

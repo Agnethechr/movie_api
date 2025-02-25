@@ -9,8 +9,8 @@ import java.util.List;
 public class Movie {
 
     private Integer id;
-    private String name;
-    @JsonProperty("original_name")
+    private String title;
+    @JsonProperty("original_title")
     private String originalName;
     private String overview;
     @JsonProperty("media_type")
@@ -19,18 +19,12 @@ public class Movie {
     @JsonProperty("original_language")
     private String originalLanguage;
     private Double popularity;
-    @JsonProperty("first_air_date")
-    private String firstAirDate;
+    @JsonProperty("release_date")
+    private String releaseDate;
     private boolean video;
     @JsonProperty("vote_average")
     private Double voteAverage;
     private Integer vote_count;
-    private ArrayList<String> person_results;
-    @JsonProperty("tv_results")
-    private List<TvShow> tvResults;
-    private ArrayList<String> tv_episode_results;
-    private ArrayList<String> tv_season_results;
-    private ArrayList<Movie> movie_results;
+    }
 
 
-}
