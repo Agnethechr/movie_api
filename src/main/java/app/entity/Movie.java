@@ -82,7 +82,6 @@ public class Movie {
         this.tagLine = mediaDTO.getTagLine();
         mediaDTO.getGenres().forEach(genreDTO -> addGenre(new Genre(genreDTO)));
         this.credits = mediaDTO.getCredits() != null ? new Credits(mediaDTO.getCredits()) : null;
-
     }
 }
 
