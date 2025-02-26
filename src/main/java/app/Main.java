@@ -2,23 +2,21 @@ package app;
 
 import app.DTO.MediaDTO;
 import app.Services.MovieService;
+import app.config.HibernateConfig;
+import app.daos.MovieDAO;
+import jakarta.persistence.EntityManagerFactory;
 
 public class Main {
+    private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+    private static final MovieDAO movieDAO = MovieDAO.getInstance(emf);
+
     public static void main(String[] args) {
         MovieService apiReader = new MovieService();
-        String movieId = "94605";
-        String imdbId = "tt0111161";
-        String serieId = "tt11126994";
         String key = (System.getenv("api_key"));
-        String response1 = apiReader.getDataFromURL("https://api.themoviedb.org/3/find/"+ imdbId + "?external_source=imdb_id&api_key="+ key);
-        String response2 = apiReader.getDataFromURL("https://api.themoviedb.org/3/find/"+ serieId + "?external_source=imdb_id&api_key="+ key);
-        String response3 = apiReader.getDataFromURL("https://api.themoviedb.org/3/movie/" + movieId + "?append_to_response=credits&language=en-US&api_key="+ key);
-        MediaDTO movieDTO1 = apiReader.getMovieById(response1);
-        MediaDTO movieDTO2 = apiReader.getMovieById(response2);
-        MediaDTO movieDTO3 = apiReader.getMovieById(response3);
-        System.out.println("fra main "+ movieDTO3);
-        System.out.println("fra main "+ movieDTO1);
-        System.out.println("fra main "+ movieDTO2);
+        String response1 = apiReader.getDataFromURL("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2020-01-01&release_date.lte=2025-01-01&sort_by=popularity.desc&with_original_language=da&api_key=" + key);
+        MediaDTO movieDTO1 = apiReader.getAllMovies(response1);
+        System.out.println("Fra Main "+ movieDTO1 + " Alle danske film fra 2020-2025");
 
+        movieDAO.create(movieDTO1);
     }
 }

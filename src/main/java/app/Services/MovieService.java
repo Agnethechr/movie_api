@@ -54,12 +54,11 @@ public class MovieService {
         }
     }
 
-
-    public List<MediaDTO> getMoviesByRating(String json, double minRating, double maxRating) {
+    public MediaDTO getAllMovies(String json) {
         objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.registerModule(new JavaTimeModule());
         try {
-            List<MediaDTO> movieDTO = objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, MediaDTO.class));
+            MediaDTO movieDTO = objectMapper.readValue(json, MediaDTO.class);
             return movieDTO;
         } catch (IOException e) {
             throw new RuntimeException("Error parsing JSON", e);

@@ -34,7 +34,7 @@ public class MediaDTO {
     private List<String> tvEpisodeResults;
     @JsonProperty("tv_season_results")
     private List<String> tvSeasonResults;
-    @JsonProperty("genres")
+    @JsonProperty("genre_ids")
     private List<GenreDTO> genres;
     private double popularity;
     @JsonProperty("vote_count")

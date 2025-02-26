@@ -40,24 +40,24 @@ public class Movie {
     private String tagLine;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "movie_id")
+    @JoinTable(name = "movie_id")
     @Transient
     private List<OriginalLanguages> spokenLanguages;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "movie_id")
+    @JoinTable(name = "movie_id")
     private List<Genre> genres = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "credits_id")
+    @JoinTable(name = "credits_id")
     private Credits credits;
 
     private void addGenre(Genre genre) {
-        if(genres != null) {
+        if (genres != null) {
             this.genres.add(genre);
             genre.getMovies().add(this);
-        }else
-        genres = new ArrayList<>();
+        } else
+            genres = new ArrayList<>();
     }
 
     public Movie(MediaDTO mediaDTO) {
@@ -80,9 +80,9 @@ public class Movie {
         this.runtime = mediaDTO.getRuntime();
         this.status = mediaDTO.getStatus();
         this.tagLine = mediaDTO.getTagLine();
-        mediaDTO.getGenres().forEach(genreDTO -> addGenre(new Genre(genreDTO)));
+        if (mediaDTO.getGenres() != null) {
+            mediaDTO.getGenres().forEach(genreDTO -> addGenre(new Genre(genreDTO)));
+        }
         this.credits = mediaDTO.getCredits() != null ? new Credits(mediaDTO.getCredits()) : null;
     }
 }
-
-

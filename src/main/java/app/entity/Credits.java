@@ -20,11 +20,11 @@ public class Credits {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cast_id")
+    @JoinTable(name = "cast_id")
     private List<Cast> cast;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "crew_id")
+    @JoinTable(name = "crew_id")
     private List<CrewMember> crew;
 
     @OneToOne(mappedBy = "credits")
