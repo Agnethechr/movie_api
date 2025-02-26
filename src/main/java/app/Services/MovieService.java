@@ -45,7 +45,7 @@ public class MovieService {
 
     public MediaDTO getMovieById(String json) {
         objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.registerModule(new JavaTimeModule());
+        //objectMapper.registerModule(new JavaTimeModule());
         try {
             MediaDTO movieDTO = objectMapper.readValue(json, MediaDTO.class);
             return movieDTO;
