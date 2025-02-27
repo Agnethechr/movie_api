@@ -4,6 +4,7 @@ import app.DTO.CreditsDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,35 +20,26 @@ public class Credits {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "cast_id")
-    private List<Cast> cast;
+    // Many-to-Many relation til Cast med korrekt join-tabel
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "movie_cast",
+            joinColumns = @JoinColumn(name = "credits_id"),
+            inverseJoinColumns = @JoinColumn(name = "cast_id")
+    )
+    private List<Cast> cast = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "crew_id")
-    private List<CrewMember> crew;
+    // Many-to-Many relation til Crew
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "movie_crew",
+            joinColumns = @JoinColumn(name = "credits_id"),
+            inverseJoinColumns = @JoinColumn(name = "crew_id")
+    )
+    private List<CrewMember> crew = new ArrayList<>();
 
-    @OneToOne(mappedBy = "credits")
+    // One-to-One relation til Movie
+    @OneToOne(mappedBy = "credits", cascade = CascadeType.ALL)
     private Movie movie;
 
-    public Credits(CreditsDTO creditsDTO) {
-        if (creditsDTO.getCast() != null) {
-            this.cast = creditsDTO
-                    .getCast()
-                    .stream()
-                    .map(Cast::new)
-                    .collect(Collectors.toList());
-        } else {
-            this.cast = null;
-        }
-        if (creditsDTO.getCrew() != null) {
-            this.crew = creditsDTO
-                    .getCrew()
-                    .stream()
-                    .map(CrewMember::new)
-                    .collect(Collectors.toList());
-        } else {
-            this.crew = null;
-        }
-    }
 }

@@ -20,30 +20,14 @@ public class CrewMemberDTO {
     private String name;
     private String department;
     private String job;
-    @JsonProperty("profile_path")
-    private String profilePath;
-    private boolean adult;
     private int gender;
     @JsonProperty("known_for_department")
     private String knownForDepartment;
-    @JsonProperty("original_name")
-    private String originalName;
-    private double popularity;
-    @JsonProperty("credit_id")
-    private String creditId;
+
+
+    public CrewMemberDTO(int id, String name) {
+    }
 
     public CrewMemberDTO(CrewMember crewMember) {
-        this.id = crewMember.getId();
-        this.crewId = crewMember.getCrewId();
-        this.name = crewMember.getName();
-        this.department = crewMember.getDepartment();
-        this.job = crewMember.getJob();
-        this.profilePath = crewMember.getProfilePath();
-        this.adult = crewMember.isAdult();
-        this.gender = crewMember.getGender();
-        this.knownForDepartment = crewMember.getKnownForDepartment();
-        this.originalName = crewMember.getOriginalName();
-        this.popularity = crewMember.getPopularity();
-        this.creditId = crewMember.getCreditId();
     }
 }

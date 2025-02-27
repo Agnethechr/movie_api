@@ -19,17 +19,4 @@ public class CreditsDTO {
     private List<CastDTO> cast;
     @JsonProperty("crew")
     private List<CrewMemberDTO> crew;
-
-    public CreditsDTO(Credits credits) {
-        this.cast = credits.getCast() != null ? credits
-                .getCast()
-                .stream()
-                .map(CastDTO::new)
-                .collect(Collectors.toList()) : null;
-        this.crew = credits.getCrew() != null ? credits
-                .getCrew()
-                .stream()
-                .map(CrewMemberDTO::new)
-                .collect(Collectors.toList()) : null;
-    }
 }

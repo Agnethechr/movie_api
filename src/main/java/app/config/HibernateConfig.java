@@ -46,7 +46,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(CrewMember.class);
         configuration.addAnnotatedClass(Genre.class);
         configuration.addAnnotatedClass(Movie.class);
-        configuration.addAnnotatedClass(OriginalLanguages.class);
+
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
@@ -81,7 +81,7 @@ public class HibernateConfig {
     private static Properties setBaseProperties(Properties props) {
         props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         props.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        props.put("hibernate.hbm2ddl.auto", "update");
+        props.put("hibernate.hbm2ddl.auto", "create"); // update for production
         props.put("hibernate.current_session_context_class", "thread");
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.format_sql", "true");

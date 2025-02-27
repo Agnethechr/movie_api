@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,71 +19,36 @@ import java.util.stream.Collectors;
 @Table(name = "movie")
 public class Movie {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String imdbId;
     private String originalName;
+    @Column(length = 1000)
     private String overview;
-    private String mediaType;
-    private boolean adult;
     private String originalLanguage;
-    private double popularity;
-    private String releaseDate;
-    private boolean video;
-    private double voteAverage;
-    private int voteCount;
-    private String posterPath;
-    private String backdropPath;
-    private int budget;
-    private int revenue;
-    private int runtime;
-    private String status;
-    private String tagLine;
+    private LocalDate releaseDate;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "movie_id")
-    @Transient
-    private List<OriginalLanguages> spokenLanguages;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "movie_id")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "movie_genre",  // Ny tabel til relation
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
     private List<Genre> genres = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "credits_id")
+    @JoinColumn(name = "credits_id")  // Opretter foreign key i Movie
     private Credits credits;
 
+
     private void addGenre(Genre genre) {
-        if (genres != null) {
+        if (genre != null) {
             this.genres.add(genre);
             genre.getMovies().add(this);
         } else
             genres = new ArrayList<>();
     }
 
-    public Movie(MediaDTO mediaDTO) {
-        this.id = mediaDTO.getId();
-        this.title = mediaDTO.getTitle();
-        this.originalName = mediaDTO.getOriginalTitle();
-        this.overview = mediaDTO.getOverview();
-        this.adult = mediaDTO.isAdult();
-        this.originalLanguage = mediaDTO.getOriginalLanguages();
-        this.popularity = mediaDTO.getPopularity();
-        this.releaseDate = mediaDTO.getReleaseDate();
-        this.video = mediaDTO.isVideo();
-        this.voteAverage = mediaDTO.getVoteAverage();
-        this.voteCount = mediaDTO.getVoteCount();
-        this.imdbId = mediaDTO.getImdbId();
-        this.posterPath = mediaDTO.getPosterPath();
-        this.backdropPath = mediaDTO.getBackdropPath();
-        this.budget = mediaDTO.getBudget();
-        this.revenue = mediaDTO.getRevenue();
-        this.runtime = mediaDTO.getRuntime();
-        this.status = mediaDTO.getStatus();
-        this.tagLine = mediaDTO.getTagLine();
-        if (mediaDTO.getGenres() != null) {
-            mediaDTO.getGenres().forEach(genreDTO -> addGenre(new Genre(genreDTO)));
-        }
-        this.credits = mediaDTO.getCredits() != null ? new Credits(mediaDTO.getCredits()) : null;
-    }
 }

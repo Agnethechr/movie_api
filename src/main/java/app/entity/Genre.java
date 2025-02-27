@@ -1,9 +1,6 @@
 package app.entity;
 import app.DTO.GenreDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,11 +18,9 @@ public class Genre {
     private int id;
     private String name;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Movie> movies = new ArrayList<>();
 
-    public Genre(GenreDTO genreDTO) {
-        this.id = genreDTO.getId();
-        this.name = genreDTO.getName();
-    }
+
+
 }
